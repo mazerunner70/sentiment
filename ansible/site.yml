@@ -1,0 +1,6 @@
+---
+# file: site.yml
+- import_playbook: ui-enable.yml
+- import_playbook: dev-env.yml
+- import_playbook: mscode.yml
+

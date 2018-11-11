@@ -1,0 +1,5 @@
+---
+# file: ui-enable.yml
+- hosts: dev_env
+  roles:
+    - ui-enable

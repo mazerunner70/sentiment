@@ -1,0 +1,20 @@
+---
+# file: roles/common/tasks/main.yml
+
+- name: Update apt-cache 
+  become: true # notes from https://stackoverflow.com/questions/41535838/how-to-run-apt-update-and-upgrade-via-ansible-shell
+  apt: 
+    update_cache: yes
+    upgrade: yes
+    cache_valid_time: 86400 #one day
+
+- name: Install desktop components
+  become: true
+
+  apt: # https://github.com/geerlingguy/ansible-role-docker/issues/77 
+    name:
+      - ubuntu-desktop
+      - indicator-session # https://askubuntu.com/questions/362556/why-cant-i-shut-down-after-installing-ubuntu-desktop-from-minimal-cd
+      - gnome-terminal
+    state: latest 
+    install_recommends: no # This style described in http://docs.ansible.com/ansible/latest/playbooks_loops.html#standard-loops
