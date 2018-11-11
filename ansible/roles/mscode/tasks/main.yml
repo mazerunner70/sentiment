@@ -1,0 +1,31 @@
+---
+# file: roles/mscode/tasks/main.yml
+
+
+# add mscode repo location
+- name: identify mscode repo
+  shell: "curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg"
+
+- name: place repo in trusted list
+  become: true
+  shell: mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+
+# Now idenitify mscode in repo
+- name: Add repo to sources list
+  become: true
+  shell: sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
+- name: Update apt-cache 
+  become: true # notes from https://stackoverflow.com/questions/41535838/how-to-run-apt-update-and-upgrade-via-ansible-shell
+  apt: 
+    update_cache: yes
+
+- name: Install MS code
+  become: true
+  apt: 
+    name:
+      - code
+      - libxss1 # to get around weird error https://github.com/Microsoft/vscode/issues/16948
+    state: latest 
+    install_recommends: no # This style described in http://docs.ansible.com/ansible/latest/playbooks_loops.html#standard-loops
+

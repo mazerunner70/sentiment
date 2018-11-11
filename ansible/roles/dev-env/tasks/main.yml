@@ -1,0 +1,36 @@
+---
+# file: roles/dev-env/tasks/main.yml
+
+- name: be sure key software is installed
+  become: true
+  apt: 
+    name:
+      - vim
+      - firefox
+    state: latest 
+    install_recommends: no # This style described in http://docs.ansible.com/ansible/latest/playbooks_loops.html#standard-loops
+
+- name: Create missing locales # https://askubuntu.com/questions/162391/how-do-i-fix-my-locale-issue
+  become: true	
+  command: locale-gen en_GB.UTF-8
+
+# Add terminal to unity start bar
+- name: script to add termial to unity bar
+  copy:
+    src: files/scripts/startup_config.sh
+    dest: /home/vagrant/bin/
+    owner: vagrant
+    group: vagrant
+    mode: 0744 
+
+- name: gnomerc runs on desktop startup, then runs script above
+  copy:
+    src: files/scripts/.gnomerc
+    dest: /home/vagrant/.gnomerc
+    owner: vagrant
+    group: vagrant
+    mode: 0744
+
+- name: dev locale
+  become: true
+  action: command update-locale LC_ALL=en_GB.utf8
