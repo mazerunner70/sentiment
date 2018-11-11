@@ -2,5 +2,7 @@
 # file: site.yml
 - import_playbook: ui-enable.yml
 - import_playbook: dev-env.yml
+- import_playbook: python.yml
 - import_playbook: mscode.yml
+- import_playbook: aws.yml
 

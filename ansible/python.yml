@@ -1,0 +1,5 @@
+---
+# file: python.yml
+- hosts: dev_env
+  roles:
+    - python
