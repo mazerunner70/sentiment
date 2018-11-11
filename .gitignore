@@ -1,0 +1,45 @@
+# Logs and databases #
+######################
+*.log
+
+# Ansible retry files #
+#######################
+*.retry
+
+# Dependency directories #
+##########################
+node_modules/
+jspm_packages/
+
+#  Vagrant files #
+##################
+.vagrant
+
+# Istanbul code coverage #
+##########################
+.nyc_output/
+
+# password file #
+#################
+ansible_vault_password.txt
+
+# old ansible files #
+#####################
+base.yml
+oldfiles/
+
+# Trash files #
+###############
+.Trash-1000/
+
+# Coverage files #
+##################
+coverage/
+
+# Database #
+############
+database/*
+!database/.gitkeep
+
+index.android.bundle
+ 
