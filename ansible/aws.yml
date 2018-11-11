@@ -1,0 +1,5 @@
+---
+# file: aws.yml
+- hosts: dev_env
+  roles:
+    - aws

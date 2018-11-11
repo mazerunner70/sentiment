@@ -1,0 +1,8 @@
+---
+# roles/aws/tasks/main.yml
+
+- name: install awscli
+  pip:
+    name: awscli
+    extra_args: --user --upgrade
+

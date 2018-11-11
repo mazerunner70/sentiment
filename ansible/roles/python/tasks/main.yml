@@ -1,0 +1,16 @@
+---
+# file: roles/python/taks/main.yml
+
+- name: Install pip
+  become: true
+  apt:
+    name:
+      - python-pip
+    state: latest
+    install_recommends: no
+
+- name: install boto3, the aws sdk
+  become: true
+  pip:
+    name: boto3
+
