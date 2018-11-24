@@ -22,6 +22,7 @@ jspm_packages/
 # password file #
 #################
 ansible_vault_password.txt
+.env
 
 # old ansible files #
 #####################
@@ -42,4 +43,10 @@ database/*
 !database/.gitkeep
 
 index.android.bundle
+corpora
+nltk_data
+sam-app/build
+uploadfiles
+__pycache__
+
  

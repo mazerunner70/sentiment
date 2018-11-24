@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/15753390/how-can-i-mock-requests-and-the-response

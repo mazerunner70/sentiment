@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "loadreviews"
+		}
+	],
+	"settings": {
+		"python.unitTest.unittestEnabled": true,
+		"python.unitTest.unittestArgs": [
+			"-v",
+			"-s",
+			"test",
+			"-p",
+			"*test*.py"
+		]
+	}
+}

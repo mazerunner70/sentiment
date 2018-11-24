@@ -5,12 +5,21 @@
   become: true
   apt:
     name:
-      - python-pip
+      - python3-pip
     state: latest
     install_recommends: no
 
-- name: install boto3, the aws sdk
+- name: install boto3, the python aws sdk
   become: true
   pip:
     name: boto3
+    executable: pip3
 
+- name: requests, etc
+  pip:
+    name: 
+      - requests
+      - python-dotenv
+      - textblob
+    extra_args: --user --upgrade
+    executable: pip3
