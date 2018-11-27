@@ -46,7 +46,8 @@ index.android.bundle
 corpora
 nltk_data
 sam-app/build
-uploadfiles
+loadreviews/uploadfiles
+
 __pycache__
 
  

@@ -18,7 +18,7 @@ class TestJiraClient(unittest.TestCase):
                     ['KEY-004', "2018-11-17T19:36:59.000+0000", 'Summary 4']
                 ]  
                 }
-            issueIterator = IssueIterator()
+            issueIterator = IssueIterator(0)
             for issue in issueIterator:
                 print (issue)
 
@@ -46,7 +46,7 @@ class TestJiraClient(unittest.TestCase):
                 print ('225', vals[args])
                 return vals[args]
             mock_object.return_value.getChunk = MagicMock(side_effect = side_effect)
-            issueIterator = IssueIterator()
+            issueIterator = IssueIterator(0)
             for issue in issueIterator:
                 print (issue)
 

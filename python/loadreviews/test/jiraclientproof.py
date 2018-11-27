@@ -4,14 +4,15 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 import requests
 
-dotenv_path = join(os.getcwd(), 'dev.env1')
+dotenv_path = join(os.getcwd(), '.env')
 print (dotenv_path)
 load_dotenv(dotenv_path)
 print (os.getenv('jpw'))
 jpw = str(os.getenv('jpw'))+'1'
 print(jpw)
 startAt=0
-url='https://jira.bgchtest.info/rest/api/2/search?startAt='+str(startAt)+'&fields=Key,description,created&expand=description&jql=project=RNTIR'
+issueKey = 10
+url='https://jira.bgchtest.info/rest/api/2/search?startAt='+str(startAt)+'&fields=Key,description,created&expand=description&jql=project=RNTIR and key >= RNTIR-'+str(issueKey)
 print (url)
 response = requests.get(url, auth=("william.o'hara@hivehome.com", jpw))
 #print(response.text)

@@ -12,6 +12,7 @@
 			"test",
 			"-p",
 			"*test*.py"
-		]
+		],
+		"python.pythonPath": "/usr/bin/python3.6"
 	}
 }

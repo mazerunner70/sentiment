@@ -1,12 +1,12 @@
 from loadreviews.jiraclient import JiraClient
 
 class IssueIterator:
-    def __init__(self, startAt):
-        self.counter = startAt
-        self.total = startAt+1
+    def __init__(self, issueKey):
+        self.counter = 0
+        self.total = self.counter+1
         self.batch_ctr = 0
         self.batch = []
-        self.jiraClient = JiraClient()
+        self.jiraClient = JiraClient(issueKey)
 
     def __iter__(self):
         return self

@@ -2,24 +2,31 @@ import collections
 from loadreviews.awsbucket import AwsBucket
 import re
 
-ProcessedRange = collections.namedtuple('ProcessedRange', 'lower upper' )
-
-
 class Store:
     def __init__(self):
-        self.awsBucket = AwsBucket()
+        self.awsbucket = AwsBucket()
+        self.s3_files = self.awsbucket.getFileList()
     
-    def getIssuesRangeProcessed(self):
-        fileList = self.awsBucket.getFileList()
-        filenames = list(filter(lambda filename: filename.startswith('records '), fileList))
-        last_entry = self.getLastEntry(filenames)
-        return last_entry
+    def getReportFileList(self):
+        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)\.")
+        return list(filter(lambda file: pattern.match(file), self.s3_files))
 
+    def getReportRange(self):
+        filenames = self.getReportFileList()
+        pattern = re.compile(r'records-RNTIR-(\d*)-RNTIR-(\d*)\.')
+        lowest = 100000
+        highest = 0
+        for filename in filenames:
+            match = pattern.match(filename)
+            highest = max(int(match.group(2)),highest)
+            lowest = min(int(match.group(1)), lowest)
+        return range(lowest, highest)
+       
     def uploadToBucket(self, filename):
-        self.awsBucket.upload(filename)
+        self.awsbucket.upload(filename)
 
     def getLastEntry(self, filenames):
-        pattern = re.compile('records RNTIR-(\\d*)-RNTIR-(\\d*)')
+        pattern = re.compile(R'records-RNTIR-(\d*)-RNTIR-(\d*)\.')
         lowest = 100000
         highest = 0
         for filename in filenames:
@@ -28,10 +35,10 @@ class Store:
 #            print (match.groups())
             highest = max(int(match.group(2)),highest)
             lowest = min(int(match.group(1)), lowest)
-        return ProcessedRange(lowest, highest)
+        return range(lowest, highest)
 
 if __name__ == '__main__':
     print ('Starting')
     store = Store()
-    range = store.getIssuesRangeProcessed()
+    range = store.getReportRange()
     print (range.lower)
