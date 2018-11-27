@@ -2,7 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Resources:
   CreateThumbnail:
     Properties:
-      CodeUri: build
+      CodeUri: s3://semantic-wils/a7fd2914b1734797e7be7cd7a68ec465
+      Environment:
+        Variables:
+          NLTK_DATA: ./
       Events:
         CreateThumbnailEvent:
           Properties:
@@ -13,9 +16,6 @@ Resources:
       Handler: app.lambda_handler
       Policies: AWSLambdaExecute
       Runtime: python3.6
-      Environment:
-        Variables:
-          NLTK_DATA: ./
       Timeout: 60
     Type: AWS::Serverless::Function
   SemanticWils:

@@ -27,7 +27,6 @@ fi
 printf "SAM app directory at ${SAM_APP_DIR}\n"
 
 pushd ${SAM_APP_DIR}
-printf "clear? ${clearDirectory}\n"
 if [[ "${clearDirectory}" -eq "1" ]]; then
     printf "clearing SAM directory\n"
     rm -r ${SAM_APP_DIR}/build
