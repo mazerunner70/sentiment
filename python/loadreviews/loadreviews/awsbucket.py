@@ -5,7 +5,7 @@ import boto3
 class AwsBucket():
     def __init__(self):
         s3 = boto3.resource('s3')
-        self.bucket = s3.Bucket('semantic-wils')
+        self.bucket = s3.Bucket('wils-semantic-1-semanticwils-nvdo5aw1g8lf')
 
     def getFileList(self):
 #        print (list(bucket.objects.all()))
@@ -14,7 +14,7 @@ class AwsBucket():
         return [file.key for file in self.bucket.objects.all()]
 
     def upload(self, filename):
-        data = open('uploadfiles/'+filename, 'rb')
+        data = open('/tmp/'+filename, 'rb')
         self.bucket.put_object(Key=filename, Body=data)
 
 if __name__ == '__main__':

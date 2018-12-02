@@ -1,0 +1,94 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Simple View API"
+# host: "ourc2b2daj.execute-api.eu-west-2.amazonaws.com"
+# basePath: "/prod"
+schemes:
+- "https"
+paths:
+  /report:
+    get:
+      operationId: "getReports"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "rangeString"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "limit"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ArrayOfReport"
+        400:
+          description: "400 response"
+      x-amazon-apigateway-integration:
+        uri: 
+          Fn::Sub: "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/${MyAccessFunction.Arn}/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+  /reports:
+    get:
+      operationId: "listreports"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/MODEL01aa47"
+      x-amazon-apigateway-integration:
+        uri: 
+          Fn::Sub: "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/${MyAccessFunction.Arn}/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+definitions:
+  Report:
+    type: "object"
+    required:
+    - "date"
+    - "id"
+    - "rating1"
+    - "rating2"
+    properties:
+      id:
+        type: "number"
+        format: "int32"
+      date:
+        type: "string"
+        format: "date-time"
+      rating1:
+        type: "number"
+      rating2:
+        type: "number"
+  ArrayOfReport:
+    type: "array"
+    items:
+      $ref: "#/definitions/Report"
+  MODEL01aa47:
+    type: "object"
+    properties:
+      lower:
+        type: "number"
+      upper:
+        type: "number"
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /wpohara/api-gateway/1.0.0

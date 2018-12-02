@@ -11,16 +11,20 @@ class Store:
 
 
     def getReportFileList(self):
-        pattern = re.compile('records-RNTIR-(\\d*)-RNTIR-(\\d*)\\.')
+        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)\.")
         return list(filter(lambda file: pattern.match(file), self.s3_files))
 
     def getProcessedFileList(self):
-        pattern = re.compile('records-RNTIR-(\\d*)-RNTIR-(\\d*)-processed')
+        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)-processed")
         return list(filter(lambda file: pattern.match(file), self.s3_files))
 
     def getFilesToProcess(self):
-        processed = list(map(lambda x: x[0:30], self.getProcessedFileList()))
-        return list(filter(lambda x: x[0:30] not in processed, self.getReportFileList()))
+        processed = list(map(lambda x: x[0:31], self.getProcessedFileList()))
+        print('Processed file stubs ', processed)
+        files_to_process = list(filter(lambda x: x[0:31] not in processed, self.getReportFileList()))
+        print('Found files to process: ', files_to_process)
+        return files_to_process
+
 
     def moveFileToLocal(self, filename):
         local_filename = '/tmp/{}'.format(os.path.basename(filename))

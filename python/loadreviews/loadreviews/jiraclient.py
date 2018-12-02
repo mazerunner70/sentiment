@@ -1,11 +1,15 @@
 import requests
 import unicodedata
 import os
+import sys
 import json
 from os.path import join, dirname 
 from dotenv import load_dotenv
 
 class JiraClient():
+    def __init__(self, issueKey):
+        self.issueKey = issueKey
+
     def getSummary(self, description):
 #        print('210', description)
         startPos = description.find('{color:navy}')
@@ -25,9 +29,10 @@ class JiraClient():
         load_dotenv(dotenv_path)
 #        print (os.getenv('jpw'))
         jpw = str(os.getenv('jpw'))+'1'
-        url='https://jira.bgchtest.info/rest/api/2/search?startAt='+str(startAt)+'&fields=Key,description,created&expand=description&jql=project=RNTIR'
+        rangeClause =  ' and key > "RNTIR-'+str(self.issueKey)+'"' if self.issueKey >0 else ''
+        url='https://jira.bgchtest.info/rest/api/2/search?startAt='+str(startAt)+'&fields=Key,description,created&expand=description&jql=project=RNTIR'+rangeClause
+        print (url)
         response = requests.get(url, auth=("william.o'hara@hivehome.com",jpw))
-#        print ('111',response)
         json_data = response.json()
 #        json_data = json.loads(response.text)
 #        print ('222',json_data)
@@ -44,5 +49,5 @@ class JiraClient():
 
 
 if __name__ == '__main__':
-    jiraclient = JiraClient()
+    jiraclient = JiraClient(2)
     jiraclient.getChunk(0)

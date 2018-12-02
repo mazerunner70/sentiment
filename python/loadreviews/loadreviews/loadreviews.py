@@ -10,13 +10,13 @@ class LoadReviews(object):
 
     def execute(self):
         store = Store()
-        processedRecords = store.getIssuesRangeProcessed()
-        if processedRecords.upper > 0:
-            print ('found uploaded records, up to RNTIR-', processedRecords.upper)
+        reportRange = store.getReportRange()
+        if reportRange.stop > 0:
+            print ('found uploaded records, up to RNTIR-', reportRange.stop)
         else:
             print ('Starting upload from scratch')
-        next_record = processedRecords.upper+1
-        issues = self.loadNewIssues(next_record)
+        last_record = reportRange.stop #last known 
+        issues = self.loadNewReports(last_record)
         if (issues):
             print ('Found ', len(issues), ' to load')
             fileName = saveList(issues)
@@ -24,8 +24,8 @@ class LoadReviews(object):
         else:
             print ('No new records found')
 
-    def loadNewIssues(self, next_record):
-        issue_iterator = IssueIterator(next_record)
+    def loadNewReports(self, last_record):
+        issue_iterator = IssueIterator(last_record)
         issues = []
         for issue in issue_iterator:
             issues.append(issue)

@@ -31,7 +31,7 @@ class TestJiraClient(unittest.TestCase):
 
     def testGetChunk(self):
         with patch('loadreviews.jiraclient.requests.get', side_effect = self.mocked_requests_get, response=self.response ) as mock_get:
-            jiraclient = JiraClient()
+            jiraclient = JiraClient(0)
             result = jiraclient.getChunk(0)
             print ('total:', result['total'])
 

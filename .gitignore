@@ -45,8 +45,10 @@ database/*
 index.android.bundle
 corpora
 nltk_data
-sam-app/build
-uploadfiles
+sam-app/build-access
+sam-app/build-semantic
+loadreviews/uploadfiles
+
 __pycache__
 
  
