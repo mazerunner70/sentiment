@@ -20,7 +20,7 @@ pushd ${SAM_APP_DIR}
 
 sam deploy \
    --template-file packaged.yaml \
-   --stack-name wils-semantic-1 \
+   --stack-name wils-semantic-2 \
    --capabilities CAPABILITY_IAM \
    --region eu-west-2
 

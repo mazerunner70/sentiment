@@ -19,7 +19,7 @@ printf "SAM app directory at ${SAM_APP_DIR}\n"
 pushd ${SAM_APP_DIR}
 
 sam package \
-   --template-file template.yml \
+   --template-file sam-app.yml \
    --output-template-file packaged.yaml \
    --s3-bucket semantic-wils
 

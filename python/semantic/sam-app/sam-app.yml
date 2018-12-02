@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  SemanticLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: build-semantic/
+      Events:
+        SemanticLambdaEvent:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: SemanticBucket
+            Events: s3:ObjectCreated:*
+      Handler: semantic.lambda_handler
+      Policies: AWSLambdaExecute
+      Runtime: python3.6
+      Environment:
+        Variables:
+          NLTK_DATA: ./nltk_data
+      Timeout: 60
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+#      DefinitionUri: access-swagger.yaml
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: !Sub s3://semantic-wils/access-swagger.yaml
+
+  SemanticBucket:
+    Type: AWS::S3::Bucket
+  MyAccessFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: access.lambda_handler
+      Runtime: python3.6
+      CodeUri: build-access/
+      Events:
+        ViewApi:
+          Type: Api
+          Properties:
+            Path: /reports
+            Method: GET
+            RestApiId: !Ref ApiGatewayApi
+        GetApi:
+          Type: Api
+          Properties:
+            Path: /report
+            Method: GET
+            RestApiId: !Ref ApiGatewayApi
+
+
+Transform: AWS::Serverless-2016-10-31
