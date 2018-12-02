@@ -1,5 +1,19 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
+  MyAccessFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: ["sts:AssumeRole"]
+            Principal: 
+              Service: "lambda.amazonaws.com"
+              
   SemanticLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -11,32 +25,36 @@ Resources:
             Bucket:
               Ref: SemanticBucket
             Events: s3:ObjectCreated:*
-      Handler: semantic.lambda_handler
+      Handler: semantic-main.lambda_handler
       Policies: AWSLambdaExecute
       Runtime: python3.6
       Environment:
-        Variables:
+        Variables: 
           NLTK_DATA: ./nltk_data
       Timeout: 60
   ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
-#      DefinitionUri: access-swagger.yaml
+#      DefinitionUri: access-swagger.yaml 
       DefinitionBody:
         'Fn::Transform':
           Name: 'AWS::Include'
           Parameters:
-            Location: !Sub s3://semantic-wils/access-swagger.yaml
+            Location: !Sub s3://wils-staging/access-swagger.yaml
 
   SemanticBucket:
     Type: AWS::S3::Bucket
   MyAccessFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: access.lambda_handler
+      Handler: access-main.lambda_handler
       Runtime: python3.6
       CodeUri: build-access/
+      Role: !GetAtt MyAccessFunctionRole.Arn
+      Environment:
+        Variables:
+          S3_BUCKET: !GetAtt SemanticBucket.Arn
       Events:
         ViewApi:
           Type: Api

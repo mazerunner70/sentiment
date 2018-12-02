@@ -4,7 +4,7 @@ from textblob.sentiments import NaiveBayesAnalyzer
 import sys
 
 class SemanticAnalysis:
-    def __init__(self, ):
+    def __init__(self ):
         self.store = Store()
         self.naive_Bayes_analyser = Blobber(analyzer=NaiveBayesAnalyzer())
 #        self.naive_Bayes_analyser('def').sentiment

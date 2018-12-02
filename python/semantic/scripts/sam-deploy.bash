@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#instructions from 
+. ~/.env
 
 
 
@@ -19,8 +19,8 @@ printf "SAM app directory at ${SAM_APP_DIR}\n"
 pushd ${SAM_APP_DIR}
 
 sam deploy \
-   --template-file packaged.yaml \
-   --stack-name wils-semantic-2 \
+   --template-file /tmp/packaged.yaml \
+   --stack-name semantic-1 \
    --capabilities CAPABILITY_IAM \
    --region eu-west-2
 
