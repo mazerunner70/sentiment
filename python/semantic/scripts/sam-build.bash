@@ -22,7 +22,7 @@ function build_lambda {
     fi
 
     #add lambda handler
-    cp ${LAMBDA_NAME}.py ${BUILD_APP_DIR}/${LAMBDA_NAME}.py
+    cp ${LAMBDA_NAME}-main.py ${BUILD_APP_DIR}/${LAMBDA_NAME}-main.py
     cp -R ../${LAMBDA_NAME} ${BUILD_APP_DIR}
     if [ ! -d "${BUILD_APP_DIR}/${OTHER_COPY_SOURCE_DIR}" ]; then
         cp -R ../${OTHER_COPY_SOURCE_DIR} ${BUILD_APP_DIR}/${OTHER_COPY_SOURCE_DIR}

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#instructions from 
+. ~/.env
 
 
 
@@ -20,8 +20,8 @@ pushd ${SAM_APP_DIR}
 
 sam package \
    --template-file sam-app.yml \
-   --output-template-file packaged.yaml \
-   --s3-bucket semantic-wils
+   --output-template-file /tmp/packaged.yaml \
+   --s3-bucket ${STAGING_S3}
 
 
 popd
