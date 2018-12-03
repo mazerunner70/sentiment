@@ -4,7 +4,7 @@ import os
 from os.path import join, dirname 
 from dotenv import load_dotenv
 
-#from access.access import Access
+from access.access import Access
 
 # https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
 def lambda_handler(event, context):
@@ -26,9 +26,9 @@ def lambda_handler(event, context):
 
 #    call(['printenv'])
 
-#    access = Access()
-#    resultDict = access.process(event['httpMethod'], event['resource'])
-    resultDict = {'dummy':1}
+    access = Access()
+    resultDict = access.process(event['httpMethod'], event['resource'])
+#    resultDict = {'dummy':1}
     print (resultDict)
 
     resultBody = json.dumps(resultDict)

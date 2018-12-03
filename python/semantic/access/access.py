@@ -8,13 +8,14 @@ class Access:
 
     def process(self, httpMethod, resource):
         if httpMethod == 'GET':
-            self.processGet(resource)
+            return self.processGet(resource)
         return { 'Error', 'Method not supported'}
     
     def processGet(self, resource):
         if resource == '/reports':
-            self.getReportList()
+            return self.getReportList()
+        return { 'Error', 'resource not supported'}
 
     def getReportList(self):
         reportLister = ReportLister()
-        return reportLister.getRange()
+        return reportLister.getrange()
