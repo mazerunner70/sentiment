@@ -21,6 +21,9 @@ function build_lambda {
         touch ${BUILD_APP_DIR}/requirements-built.txt
     fi
 
+    #copy .env file
+    cp ../.env ${BUILD_APP_DIR}/.env
+
     #add lambda handler
     cp ${LAMBDA_NAME}-main.py ${BUILD_APP_DIR}/${LAMBDA_NAME}-main.py
     cp -R ../${LAMBDA_NAME} ${BUILD_APP_DIR}

@@ -22,12 +22,8 @@ class SemanticAnalysis:
 
     def processLine(self, line):
 #        print (self.pattern_analyser('sdfg'))
-        print ('12')
-        sys.stdout.flush()
 #        nb_assessed = self.naive_Bayes_analyser(line[2]).sentiment
-        print ('13')
         ptn_assessed = self.pattern_analyser(line[2]).sentiment
-        print ('14')
         return [line[0], line[1], '', ptn_assessed.polarity]
 #        return [line[0], line[1], nb_assessed.p_pos, ptn_assessed.polarity]
         

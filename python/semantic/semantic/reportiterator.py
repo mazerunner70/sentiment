@@ -26,7 +26,7 @@ class ReportIterator:
 
     def readBatch(self, filename):
         local_filename = self.store.moveFileToLocal(filename)
-        self.batch = self.store.readLocalCsv(local_filename)
+        self.batch = self.store.read_local_csv(local_filename)
         self.batch_ctr = 0
 
     def getNextEntry(self):

@@ -13,6 +13,19 @@ Resources:
             Action: ["sts:AssumeRole"]
             Principal: 
               Service: "lambda.amazonaws.com"
+  SemanticLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: ["sts:AssumeRole"]
+            Principal: 
+              Service: "lambda.amazonaws.com"
               
   SemanticLambda:
     Type: AWS::Serverless::Function
@@ -26,7 +39,8 @@ Resources:
               Ref: SemanticBucket
             Events: s3:ObjectCreated:*
       Handler: semantic-main.lambda_handler
-      Policies: AWSLambdaExecute
+      Role: !GetAtt SemanticLambdaRole.Arn
+#      Policies: AWSLambdaExecute
       Runtime: python3.6
       Environment:
         Variables: 
@@ -45,6 +59,7 @@ Resources:
 
   SemanticBucket:
     Type: AWS::S3::Bucket
+
   MyAccessFunction:
     Type: AWS::Serverless::Function
     Properties:
