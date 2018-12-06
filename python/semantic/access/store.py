@@ -1,5 +1,6 @@
 import boto3
 import os
+import csv
 from os.path import join, dirname 
 from dotenv import load_dotenv
 
@@ -16,4 +17,19 @@ class Store:
         filelist = [file.key for file in self.bucket.objects.all()]
         return sorted(filelist)
 
+    def loadcsv(self, filename):
+        local_filename = self.movefiletolocal(filename)
+        return self.read_local_csv(local_filename)
 
+    def movefiletolocal(self, filename):
+        local_filename = '/tmp/{}'.format(os.path.basename(filename))
+        self.bucket.download_file(filename, local_filename)
+        return local_filename
+
+    def read_local_csv(self, local_filename):
+        csv_list = []
+        with open(local_filename, "r") as csv_file:
+            reader = csv.reader(csv_file)
+            for row in reader:
+                csv_list.append(row)
+        return csv_list

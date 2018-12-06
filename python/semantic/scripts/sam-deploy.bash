@@ -18,6 +18,8 @@ printf "SAM app directory at ${SAM_APP_DIR}\n"
 
 pushd ${SAM_APP_DIR}
 
+aws s3 cp access-swagger.yaml s3://wils-staging
+
 sam deploy \
    --template-file /tmp/packaged.yaml \
    --stack-name semantic-1 \

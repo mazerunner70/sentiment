@@ -15,7 +15,7 @@ class TestReportIterator(unittest.TestCase):
     @patch('semantic.reportiterator.Store')
     def testOneFile(self, mockClass):
         mockClass.return_value.moveFileToLocal.return_value = 'local:File'
-        mockClass.return_value.readLocalCsv.return_value = [[1, '12', '34']]
+        mockClass.return_value.read_local_csv.return_value = [[1, '12', '34']]
         reportIterator = ReportIterator([
             'records RNTIR-00002-RNTIR-00002.csv'
         ])
@@ -30,10 +30,10 @@ class TestReportIterator(unittest.TestCase):
     @patch('semantic.reportiterator.Store')
     def testTwoFiles(self, mockClass):
         mockClass.return_value.moveFileToLocal.return_value = 'local:File'
-        mockClass.return_value.readLocalCsv.return_value = [[1, '12', '34']]
+        mockClass.return_value.read_local_csv.return_value = [[1, '12', '34']]
         reportIterator = ReportIterator([
-            'records RNTIR-00002-RNTIR-00002.csv',
-            'records RNTIR-00002-RNTIR-00002.csv'
+            'records-RNTIR-00002-RNTIR-00002.csv',
+            'records-RNTIR-00002-RNTIR-00002.csv'
         ])
         ctr = 0
         resultList = []
