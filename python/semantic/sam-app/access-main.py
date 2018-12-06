@@ -10,8 +10,9 @@ from access.access import Access
 def lambda_handler(event, context):
     print('hello')
     print('Event: ', event)
-    print('httpMethod', event['httpMethod'])
-    print('resource', event['resource'])
+    print('httpMethod', event.get('httpMethod'))
+    print('resource', event.get('resource'))
+    print('queryStringParameters', event.get('queryStringParameters'))
     dotenv_path = join(os.getcwd(), '.env')
 #        print (dotenv_path)
     load_dotenv(dotenv_path)
@@ -27,7 +28,7 @@ def lambda_handler(event, context):
 #    call(['printenv'])
 
     access = Access()
-    resultDict = access.process(event['httpMethod'], event['resource'])
+    resultDict = access.process(event.get('httpMethod'), event.get('resource'), event.get('queryStringParameters'))
 #    resultDict = {'dummy':1}
     print (resultDict)
 
