@@ -1,4 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  CognitoUserPoolName:
+    Type: String
+    Default: MyUserPool
+
+  CognitoUserPoolClientName:
+    Type: String
+    Default: MyUserPoolClient
+
 Resources:
   MyAccessFunctionRole:
     Type: AWS::IAM::Role
@@ -50,7 +61,12 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
-#      DefinitionUri: access-swagger.yaml 
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: MyCognitoAuthorizer
+        Authorizers:
+          MyCognitoAuthorizer:
+            UserPoolArn: !GetAtt MyCognitoUserPool.Arn
       DefinitionBody:
         'Fn::Transform':
           Name: 'AWS::Include'
@@ -70,6 +86,7 @@ Resources:
       Environment:
         Variables:
           S3_BUCKET: !GetAtt SemanticBucket.Arn
+          COGNITO_USER_POOL_CLIENT_ID: !Ref MyCognitoUserPoolClient
       Events:
         ViewApi:
           Type: Api
@@ -84,5 +101,72 @@ Resources:
             Method: GET
             RestApiId: !Ref ApiGatewayApi
 
+  MyCognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref CognitoUserPoolName
+      LambdaConfig:
+        PreSignUp: !GetAtt PreSignupLambdaFunction.Arn
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
 
-Transform: AWS::Serverless-2016-10-31
+  MyCognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref MyCognitoUserPool
+      ClientName: !Ref CognitoUserPoolClientName
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - USER_PASSWORD_AUTH
+
+  PreSignupLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      InlineCode: |
+        exports.handler = async (event, context, callback) => {
+          event.response = { autoConfirmUser: true}
+          return event
+        }
+      Handler: index.handler
+      MemorySize: 128
+      Runtime: nodejs8.10
+      Timeout: 3
+
+  LambdaCognitoUserPoolExecutionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt PreSignupLambdaFunction.Arn
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !Sub 'arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${MyCognitoUserPool}'
+
+Outputs:
+  UploadBucket:
+    Description: 'S3 bucket to upload records to'
+    Value: !Ref SemanticBucket
+
+  ApiId:
+    Description: 'API_ID'
+    Value: !Ref ApiGatewayApi
+
+  ApiUrl:
+    Description: 'API endpoint URL for Prod Environment'
+    Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
+
+  CognitoUserPoolId:
+    Description: 'Cognito User Pool Id'
+    Value: !Ref MyCognitoUserPool
+
+  CognitoUserPoolClientId:
+    Description: 'Cognito User Pool Client Id'
+    Value: !Ref MyCognitoUserPoolClient
+
+# Cognito settings refrence:
+# https://github.com/awslabs/serverless-application-model/tree/master/examples/2016-10-31/api_cognito_auth
