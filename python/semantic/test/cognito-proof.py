@@ -53,13 +53,14 @@ class CognitoProof:
                 }
             )
 
-        print('Response')
+#        print('Response')
         print(response)
         print('ID Token')
         idToken = response['AuthenticationResult']['IdToken']
-        print(idToken)
+#        print(idToken)
 
         apiGateway=os.environ['API_URL']
+        print('url='+apiGateway+'reports')
         response = requests.get(apiGateway+'reports', headers={'Authorization': idToken})
         print('res')
         print(response.json())

@@ -23,8 +23,8 @@ class Access:
     def getreport_range(self, parameters):
         reportlister = ReportLister()
         report_range = self.asrange(parameters.get('range'))
-        index = parameters.get('index', 0)
-        pagesize = parameters.get('pagesize', -1)
+        index = int(parameters.get('index', 0))
+        pagesize = int(parameters.get('pagesize', -1))
         return reportlister.getreports(report_range, index, pagesize)
 
     def asrange(self, rangestring):

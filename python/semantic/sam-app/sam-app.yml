@@ -42,14 +42,33 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: build-semantic/
+#      Events:
+#        SemanticLambdaEvent:
+#          Type: S3
+#          Properties:
+#            Bucket:
+#              Ref: SemanticBucket
+#            Events: s3:ObjectCreated:*
+      Handler: semantic-main.lambda_handler
+      Role: !GetAtt SemanticLambdaRole.Arn
+#      Policies: AWSLambdaExecute
+      Runtime: python3.6
+      Environment:
+        Variables: 
+          NLTK_DATA: ./nltk_data
+      Timeout: 60
+  ComprehendLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: build-comprehend/
       Events:
-        SemanticLambdaEvent:
+        ComprehendLambdaEvent:
           Type: S3
           Properties:
             Bucket:
               Ref: SemanticBucket
             Events: s3:ObjectCreated:*
-      Handler: semantic-main.lambda_handler
+      Handler: comprehend-main.lambda_handler
       Role: !GetAtt SemanticLambdaRole.Arn
 #      Policies: AWSLambdaExecute
       Runtime: python3.6
@@ -71,7 +90,7 @@ Resources:
         'Fn::Transform':
           Name: 'AWS::Include'
           Parameters:
-            Location: !Sub s3://wils-staging/access-swagger.yaml
+            Location: !Sub s3://wils-staging-1/access-swagger.yaml
 
   SemanticBucket:
     Type: AWS::S3::Bucket
