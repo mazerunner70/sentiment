@@ -67,6 +67,7 @@ pushd ${SAM_APP_DIR}
 
 build_lambda ${SAM_APP_DIR} 'semantic' ${clearDirectory} 'nltk-data'
 build_lambda ${SAM_APP_DIR} 'access' ${clearDirectory} ''
+build_lambda ${SAM_APP_DIR} 'comprehend' ${clearDirectory} ''
 
 
 popd

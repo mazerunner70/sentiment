@@ -23,6 +23,7 @@ jspm_packages/
 #################
 ansible_vault_password.txt
 .env
+.env-london
 
 # old ansible files #
 #####################

@@ -29,10 +29,13 @@ class JiraClient():
         load_dotenv(dotenv_path)
 #        print (os.getenv('jpw'))
         jpw = str(os.getenv('jpw'))+'1'
+        
+        url = str(os.getenv('JIRA_URL'))
+        username= str(os.getenv('username'))
         rangeClause =  ' and key > "RNTIR-'+str(self.issueKey)+'"' if self.issueKey >0 else ''
-        url='https://jira.bgchtest.info/rest/api/2/search?startAt='+str(startAt)+'&fields=Key,description,created&expand=description&jql=project=RNTIR'+rangeClause
+        url=url+rangeClause
         print (url)
-        response = requests.get(url, auth=("william.o'hara@hivehome.com",jpw))
+        response = requests.get(url, auth=(username,jpw))
         json_data = response.json()
 #        json_data = json.loads(response.text)
 #        print ('222',json_data)

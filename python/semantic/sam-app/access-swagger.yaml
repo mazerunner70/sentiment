@@ -35,7 +35,7 @@ paths:
           description: "400 response"
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/${MyAccessFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/${MyAccessFunction.Arn}/invocations"
         responses:
           default:
             statusCode: "200"
@@ -55,7 +55,7 @@ paths:
             $ref: "#/definitions/MODEL01aa47"
       x-amazon-apigateway-integration:
         uri: 
-          Fn::Sub: "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/${MyAccessFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/${MyAccessFunction.Arn}/invocations"
         responses:
           default:
             statusCode: "200"
