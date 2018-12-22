@@ -3,12 +3,13 @@ import re
 from access.store import Store
 
 class ReportIterator:
-    def __init__(self, start_number):
+    def __init__(self, start_number, filepattern):
         self.store = Store()
         self.reportid = start_number
         self.batch = []
         self.sorted_filelist = self.store.get_sortedfilelist()
         self.filelist_index = 0
+        self.filepattern = filepattern
 
 
     def __iter__(self):
@@ -25,7 +26,7 @@ class ReportIterator:
             raise StopIteration()
         filename = self.sorted_filelist[self.filelist_index]
         self.filelist_index += 1
-        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)-processed")
+        pattern = re.compile(self.filepattern)
         match = pattern.match(filename)
         if not match:
             self.load_newbatch()

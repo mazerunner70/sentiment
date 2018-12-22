@@ -48,6 +48,7 @@ corpora
 nltk_data
 build-access/
 build-semantic/
+build-comprehend/
 uploadfiles
 
 __pycache__
