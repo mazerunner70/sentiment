@@ -33,7 +33,7 @@ class JiraClient():
         url = str(os.getenv('JIRA_URL'))
         username= str(os.getenv('username'))
         rangeClause =  ' and key > "RNTIR-'+str(self.issueKey)+'"' if self.issueKey >0 else ''
-        url=url+rangeClause
+        url=url+'rest/api/2/search?startAt='+str(startAt)+'&fields=Key,description,created&expand=description&jql=project=RNTIR'+rangeClause
         print (url)
         response = requests.get(url, auth=(username,jpw))
         json_data = response.json()
