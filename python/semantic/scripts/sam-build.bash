@@ -65,9 +65,9 @@ getWorkArea
 printf "SAM app directory at ${SAM_APP_DIR}\n"
 pushd ${SAM_APP_DIR}
 
-build_lambda ${SAM_APP_DIR} 'semantic' ${clearDirectory} 'nltk-data'
+#build_lambda ${SAM_APP_DIR} 'semantic' ${clearDirectory} 'nltk_data'
 build_lambda ${SAM_APP_DIR} 'access' ${clearDirectory} ''
-build_lambda ${SAM_APP_DIR} 'comprehend' ${clearDirectory} ''
+build_lambda ${SAM_APP_DIR} 'comprehend' ${clearDirectory} 'nltk_data'
 
 
 popd

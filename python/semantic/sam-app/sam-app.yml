@@ -38,10 +38,10 @@ Resources:
             Principal: 
               Service: "lambda.amazonaws.com"
               
-  SemanticLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: build-semantic/
+#  SemanticLambda:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      CodeUri: build-semantic/
 #      Events:
 #        SemanticLambdaEvent:
 #          Type: S3
@@ -49,14 +49,14 @@ Resources:
 #            Bucket:
 #              Ref: SemanticBucket
 #            Events: s3:ObjectCreated:*
-      Handler: semantic-main.lambda_handler
-      Role: !GetAtt SemanticLambdaRole.Arn
+#      Handler: semantic-main.lambda_handler
+#      Role: !GetAtt SemanticLambdaRole.Arn
 #      Policies: AWSLambdaExecute
-      Runtime: python3.6
-      Environment:
-        Variables: 
-          NLTK_DATA: ./nltk_data
-      Timeout: 60
+#      Runtime: python3.6
+#      Environment:
+#        Variables: 
+#          NLTK_DATA: ./nltk_data
+#      Timeout: 60
   ComprehendLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -99,6 +99,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: access-main.lambda_handler
+      Timeout: 10
       Runtime: python3.6
       CodeUri: build-access/
       Role: !GetAtt MyAccessFunctionRole.Arn

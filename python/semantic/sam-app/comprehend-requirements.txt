@@ -1,1 +1,2 @@
 python-dotenv==0.9.1
+textblob==0.15.2

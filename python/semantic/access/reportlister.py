@@ -13,11 +13,11 @@ class ReportLister:
         return self.getfilerange(processed_filelist)
 
     def get_processedfilelist(self, filelist):
-        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)-processed")
+        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)-comprehend")
         return list(filter(lambda file: pattern.match(file), filelist))
 
     def getfilerange(self, processedfilelist):
-        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)-processed")
+        pattern = re.compile(r"records-RNTIR-(\d*)-RNTIR-(\d*)-comprehend")
         lowest, highest = 10000, 0
         for processedfile in processedfilelist:
             match = pattern.match(processedfile)
@@ -27,17 +27,17 @@ class ReportLister:
 
     def getreports(self, report_range, index, pagesize):
         print('getting reports between', report_range.start, ' and ', report_range.stop, ' with index ', index,' and pagesize',pagesize)
-        report_iterator = ReportIterator(report_range.start)
+        report_iterator = ReportIterator(report_range.start, r"records-RNTIR-(\d*)-RNTIR-(\d*)-comprehend")
         report = 0
-        while True:
-            report = next(report_iterator)
-            id = int(report[0][6:])
-            if id >=report_range.start:
-                break
-        for f in range(0,index):
-            report = next(report_iterator)
-        reports = []
         try:
+            while True:
+                report = next(report_iterator)
+                id = int(report[0][6:])
+                if id >=report_range.start:
+                    break
+            for f in range(0,index):
+                report = next(report_iterator)
+            reports = []
             while True:
                 id = int(report[0][6:])
                 if id > report_range.stop:
